@@ -52,6 +52,7 @@ public class UpdateDialogActivity extends Activity {
 
     if (force) {
       this.findViewById(R.id.update_check_box).setVisibility(View.GONE);
+      this.findViewById(R.id.update_btn_cancel).setVisibility(View.GONE);
     }
 
     this.findViewById(R.id.update_btn_ok).setOnClickListener(listener);

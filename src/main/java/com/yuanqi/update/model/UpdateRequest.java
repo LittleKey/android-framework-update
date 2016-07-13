@@ -72,7 +72,7 @@ public final class UpdateRequest extends Message<UpdateRequest, UpdateRequest.Bu
     if (other == this) return true;
     if (!(other instanceof UpdateRequest)) return false;
     UpdateRequest o = (UpdateRequest) other;
-    return Internal.equals(unknownFields(), o.unknownFields())
+    return unknownFields().equals(o.unknownFields())
         && Internal.equals(package_name, o.package_name)
         && Internal.equals(version_code, o.version_code)
         && Internal.equals(channel, o.channel);
@@ -127,7 +127,7 @@ public final class UpdateRequest extends Message<UpdateRequest, UpdateRequest.Bu
 
     @Override
     public UpdateRequest build() {
-      return new UpdateRequest(package_name, version_code, channel, buildUnknownFields());
+      return new UpdateRequest(package_name, version_code, channel, super.buildUnknownFields());
     }
   }
 

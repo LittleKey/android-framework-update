@@ -61,7 +61,7 @@ public final class RPCRequest extends Message<RPCRequest, RPCRequest.Builder> {
     if (other == this) return true;
     if (!(other instanceof RPCRequest)) return false;
     RPCRequest o = (RPCRequest) other;
-    return Internal.equals(unknownFields(), o.unknownFields())
+    return unknownFields().equals(o.unknownFields())
         && Internal.equals(session_id, o.session_id)
         && Internal.equals(content, o.content);
   }
@@ -106,7 +106,7 @@ public final class RPCRequest extends Message<RPCRequest, RPCRequest.Builder> {
 
     @Override
     public RPCRequest build() {
-      return new RPCRequest(session_id, content, buildUnknownFields());
+      return new RPCRequest(session_id, content, super.buildUnknownFields());
     }
   }
 

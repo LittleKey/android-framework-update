@@ -83,7 +83,7 @@ public final class RPCResponse extends Message<RPCResponse, RPCResponse.Builder>
     if (other == this) return true;
     if (!(other instanceof RPCResponse)) return false;
     RPCResponse o = (RPCResponse) other;
-    return Internal.equals(unknownFields(), o.unknownFields())
+    return unknownFields().equals(o.unknownFields())
         && Internal.equals(session_id, o.session_id)
         && Internal.equals(success, o.success)
         && Internal.equals(reason, o.reason)
@@ -148,7 +148,7 @@ public final class RPCResponse extends Message<RPCResponse, RPCResponse.Builder>
 
     @Override
     public RPCResponse build() {
-      return new RPCResponse(session_id, success, reason, content, buildUnknownFields());
+      return new RPCResponse(session_id, success, reason, content, super.buildUnknownFields());
     }
   }
 

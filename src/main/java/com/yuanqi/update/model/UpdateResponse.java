@@ -32,6 +32,8 @@ public final class UpdateResponse extends Message<UpdateResponse, UpdateResponse
 
   public static final String DEFAULT_SIGN = "";
 
+  public static final Boolean DEFAULT_FORCE_UPDATE = false;
+
   @WireField(
       tag = 1,
       adapter = "com.squareup.wire.ProtoAdapter#BOOL"
@@ -62,17 +64,24 @@ public final class UpdateResponse extends Message<UpdateResponse, UpdateResponse
   )
   public final String sign;
 
-  public UpdateResponse(Boolean has_update, String version_name, String update_log, String path, String sign) {
-    this(has_update, version_name, update_log, path, sign, ByteString.EMPTY);
+  @WireField(
+      tag = 6,
+      adapter = "com.squareup.wire.ProtoAdapter#BOOL"
+  )
+  public final Boolean force_update;
+
+  public UpdateResponse(Boolean has_update, String version_name, String update_log, String path, String sign, Boolean force_update) {
+    this(has_update, version_name, update_log, path, sign, force_update, ByteString.EMPTY);
   }
 
-  public UpdateResponse(Boolean has_update, String version_name, String update_log, String path, String sign, ByteString unknownFields) {
+  public UpdateResponse(Boolean has_update, String version_name, String update_log, String path, String sign, Boolean force_update, ByteString unknownFields) {
     super(ADAPTER, unknownFields);
     this.has_update = has_update;
     this.version_name = version_name;
     this.update_log = update_log;
     this.path = path;
     this.sign = sign;
+    this.force_update = force_update;
   }
 
   @Override
@@ -83,6 +92,7 @@ public final class UpdateResponse extends Message<UpdateResponse, UpdateResponse
     builder.update_log = update_log;
     builder.path = path;
     builder.sign = sign;
+    builder.force_update = force_update;
     builder.addUnknownFields(unknownFields());
     return builder;
   }
@@ -92,12 +102,13 @@ public final class UpdateResponse extends Message<UpdateResponse, UpdateResponse
     if (other == this) return true;
     if (!(other instanceof UpdateResponse)) return false;
     UpdateResponse o = (UpdateResponse) other;
-    return Internal.equals(unknownFields(), o.unknownFields())
+    return unknownFields().equals(o.unknownFields())
         && Internal.equals(has_update, o.has_update)
         && Internal.equals(version_name, o.version_name)
         && Internal.equals(update_log, o.update_log)
         && Internal.equals(path, o.path)
-        && Internal.equals(sign, o.sign);
+        && Internal.equals(sign, o.sign)
+        && Internal.equals(force_update, o.force_update);
   }
 
   @Override
@@ -110,6 +121,7 @@ public final class UpdateResponse extends Message<UpdateResponse, UpdateResponse
       result = result * 37 + (update_log != null ? update_log.hashCode() : 0);
       result = result * 37 + (path != null ? path.hashCode() : 0);
       result = result * 37 + (sign != null ? sign.hashCode() : 0);
+      result = result * 37 + (force_update != null ? force_update.hashCode() : 0);
       super.hashCode = result;
     }
     return result;
@@ -123,6 +135,7 @@ public final class UpdateResponse extends Message<UpdateResponse, UpdateResponse
     if (update_log != null) builder.append(", update_log=").append(update_log);
     if (path != null) builder.append(", path=").append(path);
     if (sign != null) builder.append(", sign=").append(sign);
+    if (force_update != null) builder.append(", force_update=").append(force_update);
     return builder.replace(0, 2, "UpdateResponse{").append('}').toString();
   }
 
@@ -136,6 +149,8 @@ public final class UpdateResponse extends Message<UpdateResponse, UpdateResponse
     public String path;
 
     public String sign;
+
+    public Boolean force_update;
 
     public Builder() {
     }
@@ -165,9 +180,14 @@ public final class UpdateResponse extends Message<UpdateResponse, UpdateResponse
       return this;
     }
 
+    public Builder force_update(Boolean force_update) {
+      this.force_update = force_update;
+      return this;
+    }
+
     @Override
     public UpdateResponse build() {
-      return new UpdateResponse(has_update, version_name, update_log, path, sign, buildUnknownFields());
+      return new UpdateResponse(has_update, version_name, update_log, path, sign, force_update, super.buildUnknownFields());
     }
   }
 
@@ -183,6 +203,7 @@ public final class UpdateResponse extends Message<UpdateResponse, UpdateResponse
           + (value.update_log != null ? ProtoAdapter.STRING.encodedSizeWithTag(3, value.update_log) : 0)
           + (value.path != null ? ProtoAdapter.STRING.encodedSizeWithTag(4, value.path) : 0)
           + (value.sign != null ? ProtoAdapter.STRING.encodedSizeWithTag(5, value.sign) : 0)
+          + (value.force_update != null ? ProtoAdapter.BOOL.encodedSizeWithTag(6, value.force_update) : 0)
           + value.unknownFields().size();
     }
 
@@ -193,6 +214,7 @@ public final class UpdateResponse extends Message<UpdateResponse, UpdateResponse
       if (value.update_log != null) ProtoAdapter.STRING.encodeWithTag(writer, 3, value.update_log);
       if (value.path != null) ProtoAdapter.STRING.encodeWithTag(writer, 4, value.path);
       if (value.sign != null) ProtoAdapter.STRING.encodeWithTag(writer, 5, value.sign);
+      if (value.force_update != null) ProtoAdapter.BOOL.encodeWithTag(writer, 6, value.force_update);
       writer.writeBytes(value.unknownFields());
     }
 
@@ -207,6 +229,7 @@ public final class UpdateResponse extends Message<UpdateResponse, UpdateResponse
           case 3: builder.update_log(ProtoAdapter.STRING.decode(reader)); break;
           case 4: builder.path(ProtoAdapter.STRING.decode(reader)); break;
           case 5: builder.sign(ProtoAdapter.STRING.decode(reader)); break;
+          case 6: builder.force_update(ProtoAdapter.BOOL.decode(reader)); break;
           default: {
             FieldEncoding fieldEncoding = reader.peekFieldEncoding();
             Object value = fieldEncoding.rawProtoAdapter().decode(reader);

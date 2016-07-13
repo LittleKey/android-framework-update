@@ -95,6 +95,9 @@ public class UpdateAgent {
   }
 
   private void onUpdateReturn(int status, UpdateResponse response) {
+    if (mUpdateListener != null) {
+      mUpdateListener.onUpdateReturned(status, response);
+    }
     if (status == UpdateStatus.Yes) {
       try {
         // TODO Maybe this should do in background ?
@@ -104,9 +107,6 @@ public class UpdateAgent {
       } catch (Exception e) {
         Timber.e("Fail to create update dialog box.", e);
       }
-    }
-    if (mUpdateListener != null) {
-      mUpdateListener.onUpdateReturned(status, response);
     }
   }
 
@@ -169,7 +169,7 @@ public class UpdateAgent {
   }
 
   private void startDownload(UpdateResponse response) {
-    agent = new DownloadAgent(mContext, DeviceConfig.getApplicationLable(mContext), response.path);
+    agent = new DownloadAgent(mContext, DeviceConfig.getApplicationLabel(mContext), response.path);
     agent.setSign(response.sign);
     agent.start();
   }
