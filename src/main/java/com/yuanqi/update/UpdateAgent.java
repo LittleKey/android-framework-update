@@ -151,7 +151,8 @@ public class UpdateAgent {
     Bundle bundle = new Bundle();
     bundle.putSerializable(Constants.KEY_RESPONSE, response);
     bundle.putBoolean(Constants.KEY_IS_DOWNLOADED, isDownloaded);
-    bundle.putBoolean(Constants.KEY_IS_FORCE, UpdateConfig.isUpdateForce());
+    bundle.putBoolean(Constants.KEY_IS_FORCE,
+        UpdateConfig.isUpdateForce() || Wire.get(response.force_update, false));
     intent.putExtras(bundle);
     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
     mContext.startActivity(intent);
