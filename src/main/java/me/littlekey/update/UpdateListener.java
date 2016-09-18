@@ -1,6 +1,6 @@
-package com.yuanqi.update;
+package me.littlekey.update;
 
-import com.yuanqi.update.model.UpdateResponse;
+import me.littlekey.update.model.UpdateResponse;
 
 /**
  * 自动更新回调接口

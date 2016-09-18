@@ -1,4 +1,4 @@
-package com.yuanqi.update;
+package me.littlekey.update;
 
 import com.android.volley.Cache;
 import com.android.volley.NetworkResponse;
@@ -8,10 +8,10 @@ import com.android.volley.VolleyError;
 import com.squareup.wire.Message;
 import com.squareup.wire.ProtoAdapter;
 import com.squareup.wire.Wire;
-import com.yuanqi.network.ApiContext;
-import com.yuanqi.network.ApiRequest;
-import com.yuanqi.network.RequestManager;
-import com.yuanqi.update.model.RPCResponse;
+import me.littlekey.network.ApiContext;
+import me.littlekey.network.ApiRequest;
+import me.littlekey.network.RequestManager;
+import me.littlekey.update.model.RPCResponse;
 
 import java.util.Arrays;
 
@@ -27,8 +27,8 @@ class ProtoRequest<T extends Message> extends ApiRequest<T> {
   private final byte[] mBody;
 
   public ProtoRequest(ApiContext apiContext, String url, Class<T> clazz, byte[] body,
-      Response.Listener<T> listener, Response.ErrorListener errorListener,
-      RequestManager.CacheConfig config) {
+                      Response.Listener<T> listener, Response.ErrorListener errorListener,
+                      RequestManager.CacheConfig config) {
     super(apiContext, Request.Method.POST, url, listener, errorListener);
     this.mClass = clazz;
     this.mBody = body;

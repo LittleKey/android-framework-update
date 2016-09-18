@@ -1,4 +1,4 @@
-package com.yuanqi.update;
+package me.littlekey.update;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -7,7 +7,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
 
-import com.yuanqi.update.model.UpdateResponse;
+import me.littlekey.update.model.UpdateResponse;
 
 import de.greenrobot.event.EventBus;
 

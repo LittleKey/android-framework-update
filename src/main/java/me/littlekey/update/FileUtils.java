@@ -1,4 +1,4 @@
-package com.yuanqi.update;
+package me.littlekey.update;
 
 class FileUtils {
 	public static final int S_IRWXU = 00700;

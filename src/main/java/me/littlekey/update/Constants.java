@@ -1,4 +1,4 @@
-package com.yuanqi.update;
+package me.littlekey.update;
 
 class Constants {
   public static final String CACHE_PATH = "/update";

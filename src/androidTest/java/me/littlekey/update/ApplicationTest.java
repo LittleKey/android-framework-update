@@ -1,4 +1,4 @@
-package com.yuanqi.update;
+package me.littlekey.update;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

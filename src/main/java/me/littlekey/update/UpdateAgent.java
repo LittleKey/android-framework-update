@@ -1,4 +1,4 @@
-package com.yuanqi.update;
+package me.littlekey.update;
 
 import android.content.Context;
 import android.content.Intent;
@@ -9,12 +9,12 @@ import android.widget.Toast;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.squareup.wire.Wire;
-import com.yuanqi.base.utils.DeviceConfig;
-import com.yuanqi.network.ApiContext;
-import com.yuanqi.network.RequestManager;
-import com.yuanqi.update.model.RPCRequest;
-import com.yuanqi.update.model.UpdateRequest;
-import com.yuanqi.update.model.UpdateResponse;
+import me.littlekey.base.utils.DeviceConfig;
+import me.littlekey.network.ApiContext;
+import me.littlekey.network.RequestManager;
+import me.littlekey.update.model.RPCRequest;
+import me.littlekey.update.model.UpdateRequest;
+import me.littlekey.update.model.UpdateResponse;
 
 import java.io.File;
 

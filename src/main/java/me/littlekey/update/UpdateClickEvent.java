@@ -1,6 +1,6 @@
-package com.yuanqi.update;
+package me.littlekey.update;
 
-import com.yuanqi.update.model.UpdateResponse;
+import me.littlekey.update.model.UpdateResponse;
 
 /**
  * Event for dialog button click.

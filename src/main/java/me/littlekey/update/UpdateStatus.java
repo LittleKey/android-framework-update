@@ -1,4 +1,4 @@
-package com.yuanqi.update;
+package me.littlekey.update;
 /**
  * 自动更新返回状态
  * @author Administrator

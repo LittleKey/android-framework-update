@@ -1,4 +1,4 @@
-package com.yuanqi.update;
+package me.littlekey.update;
 
 import android.annotation.SuppressLint;
 import android.app.Notification;
@@ -19,9 +19,7 @@ import android.support.v4.app.NotificationCompat;
 import android.util.SparseArray;
 import android.widget.Toast;
 
-import com.yuanqi.base.utils.DeviceConfig;
-import com.yuanqi.update.DownloadAgent.DownloadItem;
-import com.yuanqi.update.DownloadTool.Pair;
+import me.littlekey.base.utils.DeviceConfig;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -79,7 +77,7 @@ public class DownloadingService extends Service {
   /**
    * notification id --> {thread,notification,item}
    */
-  private static final SparseArray<Pair> sPairCache = new SparseArray<>();
+  private static final SparseArray<DownloadTool.Pair> sPairCache = new SparseArray<>();
   private static NotificationManager sNotificationManager;
   /**
    * To handle incoming request for downloads from client.
@@ -118,7 +116,7 @@ public class DownloadingService extends Service {
       public void onStart(int nid) {
         // sNotificationManager.cancel(nid);
         if (sPairCache.indexOfKey(nid) >= 0) {
-          Pair pair = sPairCache.get(nid);
+          DownloadTool.Pair pair = sPairCache.get(nid);
           long[] backup = pair.backup;
           int prePos = 0;
           if (backup[1] > 0) {
@@ -139,8 +137,8 @@ public class DownloadingService extends Service {
       @Override
       public void onProgress(int nid, int progress) {
         if (sPairCache.indexOfKey(nid) >= 0) {
-          Pair pair = sPairCache.get(nid);
-          DownloadItem item = pair.item;
+          DownloadTool.Pair pair = sPairCache.get(nid);
+          DownloadAgent.DownloadItem item = pair.item;
           NotificationCompat.Builder mBuilder = pair.currentNotification;
           mBuilder.setProgress(100, progress, false)
               .setContentText(String.valueOf(progress) + "%");
@@ -154,9 +152,9 @@ public class DownloadingService extends Service {
       @Override
       public void onEnd(final int nid, final String fileName) {
         if (sPairCache.indexOfKey(nid) >= 0) {
-          Pair pair = sPairCache.get(nid);
+          DownloadTool.Pair pair = sPairCache.get(nid);
           if (pair != null) {
-            final DownloadItem item = pair.item;
+            final DownloadAgent.DownloadItem item = pair.item;
             NotificationCompat.Builder mBuilder = pair.currentNotification;
             mBuilder.setProgress(100, 100, false)
                 .setContentText(String.valueOf(DOWNLOAD_PROGRESS_COMPLETE) + "%");
@@ -195,8 +193,8 @@ public class DownloadingService extends Service {
       @Override
       public void onError(int nid, Exception e) {
         if (sPairCache.indexOfKey(nid) >= 0) {
-          Pair pair = sPairCache.get(nid);
-          DownloadItem item = pair.item;
+          DownloadTool.Pair pair = sPairCache.get(nid);
+          DownloadAgent.DownloadItem item = pair.item;
           NotificationCompat.Builder mBuilder = pair.currentNotification;
           mBuilder.setProgress(0, 0, false)
               .setContentText(item.title + mContext.getString(R.string.update_download_failed));
@@ -207,7 +205,7 @@ public class DownloadingService extends Service {
     };
   }
 
-  private void handleDownloadComplete(DownloadItem item, String fileName, int notificationId) {
+  private void handleDownloadComplete(DownloadAgent.DownloadItem item, String fileName, int notificationId) {
     try {
       Timber.d("Cancel old notification....");
       Intent intent = new Intent(Intent.ACTION_VIEW);
@@ -253,14 +251,14 @@ public class DownloadingService extends Service {
     }
   }
 
-  private void startDownload(DownloadItem item) {
+  private void startDownload(DownloadAgent.DownloadItem item) {
     Timber.d("startDownload([" + " title:" + item.title + " url:" + item.url + "])");
 
     int nId = DownloadTool.buildNotificationID(item);
     DownloadingThread thread =
         new DownloadingThread(this, item, nId, mDownloadThreadListener);
 
-    Pair pair = new Pair(item, nId);
+    DownloadTool.Pair pair = new DownloadTool.Pair(item, nId);
     pair.pushToCache(sPairCache);
     pair.thread = thread;
 
@@ -287,7 +285,7 @@ public class DownloadingService extends Service {
    * <li>msg.arg2: no use.</li>
    * <li>msg.replyTo Messenger, reference to client.</li>
    * <li>msg.getData(): {@link Bundle}, from
-   * {@link DownloadItem#toBundle() DownloadItem}.</li>
+   * {@link DownloadAgent.DownloadItem#toBundle() DownloadItem}.</li>
    * </ul>
    *
    */
@@ -377,8 +375,8 @@ public class DownloadingService extends Service {
 
     // handle message if download complete and succeed
 
-    public DownloadingThread(DownloadingService service, DownloadItem item, int nid,
-        DownloadThreadListener listener) {
+    public DownloadingThread(DownloadingService service, DownloadAgent.DownloadItem item, int nid,
+                             DownloadThreadListener listener) {
       mService = new WeakReference<>(service);
       mContext = service.getApplicationContext();
       mDownloadItem = item;
@@ -386,7 +384,7 @@ public class DownloadingService extends Service {
       repeatCount = 0;
       mListener = listener;
       if (sPairCache.indexOfKey(nid) >= 0) {
-        Pair pair = sPairCache.get(nid);
+        DownloadTool.Pair pair = sPairCache.get(nid);
         long[] backup = pair.backup;
         if (backup != null && backup.length > 1) {
           accLen = backup[0];
@@ -495,7 +493,7 @@ public class DownloadingService extends Service {
         fileOutputStream.close();
 
         if (safeDestroy == 1) {
-          Pair pair = sPairCache.get(mNotificationId);
+          DownloadTool.Pair pair = sPairCache.get(mNotificationId);
           pair.backup[0] = accLen;
           pair.backup[1] = totalLength;
           pair.backup[2] = repeatCount;
@@ -602,7 +600,7 @@ public class DownloadingService extends Service {
       return conn;
     }
 
-    private String getFileName(DownloadItem downloadItem) {
+    private String getFileName(DownloadAgent.DownloadItem downloadItem) {
       String fileName;
       if (downloadItem.sign != null) {
         fileName = downloadItem.sign + ".apk.tmp";

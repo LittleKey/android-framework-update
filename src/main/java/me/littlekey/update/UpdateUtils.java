@@ -1,9 +1,9 @@
-package com.yuanqi.update;
+package me.littlekey.update;
 
 import android.content.Context;
 
-import com.yuanqi.base.utils.DeviceConfig;
-import com.yuanqi.update.model.UpdateResponse;
+import me.littlekey.base.utils.DeviceConfig;
+import me.littlekey.update.model.UpdateResponse;
 
 import java.io.File;
 import java.io.FileInputStream;

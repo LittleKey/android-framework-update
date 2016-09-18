@@ -1,4 +1,4 @@
-package com.yuanqi.update;
+package me.littlekey.update;
 
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningAppProcessInfo;
@@ -10,8 +10,8 @@ import android.os.Messenger;
 import android.support.v4.app.NotificationCompat.Builder;
 import android.util.SparseArray;
 
-import com.yuanqi.update.DownloadAgent.DownloadItem;
-import com.yuanqi.update.DownloadingService.DownloadingThread;
+import me.littlekey.update.DownloadAgent.DownloadItem;
+import me.littlekey.update.DownloadingService.DownloadingThread;
 
 import java.util.List;
 import java.util.Map;
